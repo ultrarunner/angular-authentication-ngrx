@@ -1,0 +1,36 @@
+import { Action } from '@ngrx/store';
+
+export enum AuthenticationActionTypes {
+    LOGIN = 'Login',
+    LOGIN_SUCCESS = 'Success',
+    LOGIN_FAILURE = 'Failure',
+    LOGOUT = 'Logout'
+}
+
+export class Login implements Action {
+    readonly type = AuthenticationActionTypes.LOGIN;
+
+    constructor(public payload: any) {
+    }
+}
+
+export class LoginSuccess implements Action {
+    readonly type = AuthenticationActionTypes.LOGIN_SUCCESS;
+
+    constructor(public payload: any) {
+    }
+}
+
+export class LoginFailure implements Action {
+    readonly type = AuthenticationActionTypes.LOGIN_FAILURE;
+
+    constructor(public payload: any) {
+    }
+}
+
+export class Logout implements Action {
+    readonly type = AuthenticationActionTypes.LOGOUT;
+}
+
+export type AuthenticationActions = Login | LoginSuccess | LoginFailure | Logout;
+
