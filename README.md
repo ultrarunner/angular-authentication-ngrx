@@ -4,6 +4,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 # Blog Post(s)
 http://www.gistia.com/authentication-in-angular-with-ngrx-part-i/
+http://www.gistia.com/authentication-in-angular-with-ngrx-part-ii/
 
 ## Development server
 
