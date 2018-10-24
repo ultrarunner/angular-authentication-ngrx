@@ -1,4 +1,4 @@
-<form (ngSubmit)="onSubmit()" ngNativeValidate class="form-signin">
+<!-- <form (ngSubmit)="onSubmit()" ngNativeValidate class="form-signin">
   <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
   <div *ngIf="errorMessage">
       <div class="alert alert-danger" role="alert">
@@ -14,4 +14,14 @@
     <input [(ngModel)]="user.password" name="password" type="password" required class="form-control" id="password" placeholder="enter a password">
   </div>
   <button type="submit" class="btn btn-primary">Login</button>
-</form>
+  <button type="button" class="btn btn-danger" (click)="googleLogin()">Google Login</button>
+</form> -->
+<div *ngIf="$user | async as user">
+  <h1>Howdy, {{user.displayName}}</h1>
+  <h4>{{user.uid}}</h4>
+
+  <button *ngIf="!user.uid" (click)="googleLogin()" [class.is-loading]="user.loading">
+    Google Sign-In
+  </button>
+  <button *ngIf="user.uid" (click)="logout()">Logout</button>
+</div>

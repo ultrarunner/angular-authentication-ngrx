@@ -1,61 +1,69 @@
-import { Router } from '@angular/router';
 import { Injectable } from '@angular/core';
-import { Action } from '@ngrx/store';
-import { Actions, Effect, ofType } from '@ngrx/effects';
-import { AuthenticationService } from '../../services/authentication.service';
-import { Observable, of } from 'rxjs';
-import { AuthenticationActionTypes, Login, LoginSuccess, LoginFailure, Logout } from '../actions/authentication.actions';
-import { map, switchMap, catchError, tap } from 'rxjs/operators';
+import { Actions, Effect } from '@ngrx/effects';
+import { Observable, of, from } from 'rxjs';
+import { AngularFireAuth } from 'angularfire2/auth';
+import * as firebase from 'firebase';
+import { map, switchMap, delay, catchError } from 'rxjs/operators';
 import { User } from '../../models/user';
+import * as userActions from '../actions/authentication.actions';
+export type Action = userActions.All;
 
 @Injectable()
 export class AuthenticationEffects {
 
     constructor(
         private actions: Actions,
-        private authenticationService: AuthenticationService,
-        private router: Router,
+        private angularFireAuth: AngularFireAuth
     ) { }
 
     @Effect()
-    Login: Observable<any> = this.actions
-        .ofType(AuthenticationActionTypes.LOGIN)
+    getUser: Observable<Action> = this.actions.ofType(userActions.GET_USER)
         .pipe(
-            map((action: Login) => action.payload),
+            map((action: userActions.GetUser) => action.payload),
+            switchMap(payload => this.angularFireAuth.authState),
+            delay(2000), // just to simulate and display loading spinner
+            map(authData => {
+                if (authData) {
+                    // successful login
+                    const user = new User(authData.uid, authData.displayName);
+                    return new userActions.Authenticated(user);
+                } else {
+                    // failed logged in
+                    return new userActions.NotAuthenticated();
+                }
+            }),
+            catchError(error => of(new userActions.AuthError()))
+        );
+
+    @Effect()
+    login: Observable<Action> = this.actions.ofType(userActions.GOOGLE_LOGIN)
+        .pipe(
+            map((action: userActions.GetUser) => action.payload),
             switchMap(payload => {
-                return this.authenticationService.login(payload.email, payload.password)
-                    .pipe(
-                        map((user: User) => {
-                            console.log(user);
-                            return new LoginSuccess({ token: user.token, email: payload.email });
-                        }),
-                        catchError((error) => {
-                            return of(new LoginFailure({ error: error }));
-                        }));
-            }));
+                return from(this.googleLogin());
+            }),
+            delay(2000), // just to simulate and display loading spinner
+            map(credentials => {
+                return new userActions.GetUser();
+            }),
+            catchError(error => of(new userActions.AuthError({ error: error.message })))
+        );
 
-    @Effect({ dispatch: false })
-    LoginSuccess: Observable<any> = this.actions.pipe(
-        ofType(AuthenticationActionTypes.LOGIN_SUCCESS),
-        tap((user) => {
-            localStorage.setItem('token', user.payload.token);
-            localStorage.setItem('emal', user.payload.email);
-            this.router.navigateByUrl('/');
-        })
-    );
+    @Effect()
+    logout: Observable<Action> = this.actions.ofType(userActions.LOGOUT)
+        .pipe(
+            map((action: userActions.GetUser) => action.payload),
+            switchMap(payload => {
+                return from(this.angularFireAuth.auth.signOut());
+            }),
+            map(credentials => {
+                return new userActions.NotAuthenticated();
+            }),
+            catchError(error => of(new userActions.AuthError({ error: error.message })))
+        );
 
-    @Effect({ dispatch: false })
-    LoginFailure: Observable<any> = this.actions.pipe(
-        ofType(AuthenticationActionTypes.LOGIN_FAILURE),
-    );
-
-    @Effect({ dispatch: false })
-    Logout: Observable<any> = this.actions.pipe(
-        ofType(AuthenticationActionTypes.LOGOUT),
-        tap((user) => {
-            localStorage.removeItem('token');
-            localStorage.removeItem('emal');
-            this.router.navigateByUrl('/login');
-        })
-    );
+    private googleLogin(): Promise<any> {
+        const provider = new firebase.auth.GoogleAuthProvider();
+        return this.angularFireAuth.auth.signInWithPopup(provider);
+    }
 }

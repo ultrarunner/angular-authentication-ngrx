@@ -1,43 +1,57 @@
 import { User } from '../../models/user';
-import { AuthenticationActionTypes, AuthenticationActions } from '../actions/authentication.actions';
+import * as userActions from '../actions/authentication.actions';
 
-export interface State {
-    isAuthenticated: boolean;
-    user: User | null;
-    errorMessage: string | null;
-}
+export type Action = userActions.All;
 
-export const initialState: State = {
-    isAuthenticated: localStorage.getItem('token') == null,
-    user: {
-        token: localStorage.getItem('token'),
-        email: localStorage.getItem('email')
-    },
-    errorMessage: null
-};
+const defaultUser = new User(null, 'GUEST');
 
-export function reducer(state = initialState, action: AuthenticationActions): State {
+export function userReducer(state: User = defaultUser, action: Action) {
     switch (action.type) {
-        case AuthenticationActionTypes.LOGIN_SUCCESS: {
+        case userActions.GET_USER: {
             return {
                 ...state,
-                isAuthenticated: true,
-                user: {
-                    token: action.payload.token,
-                    email: action.payload.email
-                },
-                errorMessage: null
+                loading: true
             };
         }
-        case AuthenticationActionTypes.LOGIN_FAILURE: {
+
+        case userActions.AUTHENTICATED: {
             return {
                 ...state,
-                errorMessage: 'Invalid Credentials'
+                ...action.payload,
+                loading: false
             };
         }
-        case AuthenticationActionTypes.LOGOUT: {
-            return initialState;
+
+        case userActions.NOT_AUTHENTICATED: {
+            return {
+                ...state,
+                ...defaultUser,
+                loading: false
+            };
         }
+
+        case userActions.GOOGLE_LOGIN: {
+            return {
+                ...state,
+                loading: true
+            };
+        }
+
+        case userActions.AUTH_ERROR: {
+            return {
+                ...state,
+                ...action.payload,
+                loading: false
+            };
+        }
+
+        case userActions.LOGOUT: {
+            return {
+                ...state,
+                loading: true
+            };
+        }
+
         default: {
             return state;
         }

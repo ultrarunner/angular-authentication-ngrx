@@ -1,5 +1,11 @@
-export class User {
-    email: string;
-    password?: string;
-    token: string;
+export interface IUser {
+    uid: string;
+    displayName;
+    loading?: boolean;
+    error?: string;
+}
+
+export class User implements IUser {
+    constructor(public uid: string, public displayName: string) {
+    }
 }

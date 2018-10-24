@@ -1,12 +1,5 @@
-import {createFeatureSelector} from '@ngrx/store';
-import * as authentication from './reducers/authentication.reducer';
+import { User } from '../models/user';
 
 export interface AppState {
-    authenticationState: authentication.State;
+    user: User;
 }
-
-export const reducers = {
-    authentication: authentication.reducer
-};
-
-export const selectAuthenticationState = createFeatureSelector<AppState>('authentication');
