@@ -1,0 +1,29 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: This template will create the S3 bucket that will host our angular application.
+Parameters: 
+  EnvironmentName:
+    Type: String
+    Description: The name of the environment this S3 bucket will host the web site for.
+    MinLength: 3
+    MaxLength: 48
+    # only lower case letters
+    AllowedPattern: ^[a-z]*$
+    ConstraintDescription: Environment name must be lowercase between 3 and 48 characters. 
+Resources:
+  # name of the resource, not the actual s3 bucket
+  AngularAppBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub just-for-today-devops-${EnvironmentName}
+      Tags:
+        - Key: Application Name
+          Value: Just For Today
+        - Key: Company Name
+          Value: Born To Learn Wild
+      WebsiteConfiguration:
+        IndexDocument: index.html
+        ErrorDocument: index.html
+Outputs:
+  WebsiteURL:
+    Value: !GetAtt [ AngularAppBucket, WebsiteURL ]
+    Description: URL of the Just-For-Today web site to browse.
