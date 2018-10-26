@@ -9,11 +9,13 @@ phases:
   pre_build:
     commands:
       - echo Executing PRE Build Phase
+      - npm install
     finally:
       - echo Executed PRE Build Phase
   build:
     commands:
       - echo Executing Build Phase
+      - npm run build:ci
     finally:
       - echo Executed Build Phase
   post_build:
@@ -21,3 +23,13 @@ phases:
       - echo Executing POST Build Phase
     finally:
       - echo Executed POST Build Phase
+
+artifacts:
+  files:
+    - '**/*.html'
+    - '**/*.js'
+    - '**/*.ico'
+    - '**/*.css'
+  # exclude the folder apth 'my-app' 
+  dicard-paths: yes
+  base-directory: 'dist/my-app'
