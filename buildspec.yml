@@ -7,7 +7,7 @@ phases:
       # used t0 resynchronize the package index from the sources. 
       - apt-get update
       # headless chrome and dependencies
-      - apt-get install -y fonts-liberation libasound2 libnspr4 libnss3 libx11-xcb1 xdg-utils libxss1
+      - apt-get install -y fonts-liberation libasound2 libnspr4 libnss3 libx11-xcb1 xdg-utils libxss1 libappindicator3-1 libatk-bridge2.0-0 libgtk-3-0
       # pulling down chrome to install
       - wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
       - dpkg -i google-chrome*.deb
