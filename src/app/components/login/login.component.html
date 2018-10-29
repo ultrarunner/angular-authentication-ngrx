@@ -1,27 +1,12 @@
-<!-- <form (ngSubmit)="onSubmit()" ngNativeValidate class="form-signin">
-  <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-  <div *ngIf="errorMessage">
-      <div class="alert alert-danger" role="alert">
-        {{errorMessage}}
-      </div>
-    </div>  
-  <div class="form-group">
-    <label for="email">Email</label>
-    <input [(ngModel)]="user.email" name="email" type="email" required class="form-control" id="email" placeholder="enter your email">
-  </div>
-  <div class="form-group">
-    <label for="password">Password</label>
-    <input [(ngModel)]="user.password" name="password" type="password" required class="form-control" id="password" placeholder="enter a password">
-  </div>
-  <button type="submit" class="btn btn-primary">Login</button>
-  <button type="button" class="btn btn-danger" (click)="googleLogin()">Google Login</button>
-</form> -->
 <div *ngIf="$user | async as user">
-  <h1>Howdy, {{user.displayName}}</h1>
-  <h4>{{user.uid}}</h4>
-
-  <button *ngIf="!user.uid" (click)="googleLogin()" [class.is-loading]="user.loading">
-    Google Sign-In
+  <button class="btn btn-sm btn-outline-primary" *ngIf="!user.uid" (click)="googleLogin()" [class.is-loading]="user.loading">
+    Google
   </button>
-  <button *ngIf="user.uid" (click)="logout()">Logout</button>
+  <div *ngIf="user.uid" ngbDropdown class="d-inline-block">
+    <button class="btn btn-outline-primary" id="dropdownBasic2" ngbDropdownToggle>Hi, {{user.displayName}}</button>
+    <div ngbDropdownMenu aria-labelledby="dropdownBasic2">
+      <button class="dropdown-item">{{user.email}}</button>
+      <button class="dropdown-item" (click)="logout()">Logout</button>
+    </div>
+  </div>
 </div>

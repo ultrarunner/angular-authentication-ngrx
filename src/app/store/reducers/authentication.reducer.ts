@@ -3,7 +3,7 @@ import * as userActions from '../actions/authentication.actions';
 
 export type Action = userActions.All;
 
-const defaultUser = new User(null, 'GUEST');
+const defaultUser = new User(null, 'GUEST', '');
 
 export function userReducer(state: User = defaultUser, action: Action) {
     switch (action.type) {

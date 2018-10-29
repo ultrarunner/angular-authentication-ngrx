@@ -16,6 +16,8 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
 import { environment } from 'src/environments/environment';
 import { userReducer } from './store/reducers/authentication.reducer';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -26,10 +28,9 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
     BrowserModule,
     FormsModule,
     Routing,
-
+    NgbModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
-
     EffectsModule.forRoot([
       AuthenticationEffects
     ]),
@@ -43,6 +44,9 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
     AuthenticationService,
     AuthenticationGuardService
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [
+    AppComponent,
+    LoginComponent
+  ]
 })
 export class AppModule { }

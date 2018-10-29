@@ -21,11 +21,11 @@ export class AuthenticationEffects {
         .pipe(
             map((action: userActions.GetUser) => action.payload),
             switchMap(payload => this.angularFireAuth.authState),
-            delay(2000), // just to simulate and display loading spinner
+            // delay(2000), // just to simulate and display loading spinner
             map(authData => {
                 if (authData) {
                     // successful login
-                    const user = new User(authData.uid, authData.displayName);
+                    const user = new User(authData.uid, authData.displayName, authData.email);
                     return new userActions.Authenticated(user);
                 } else {
                     // failed logged in
@@ -64,6 +64,8 @@ export class AuthenticationEffects {
 
     private googleLogin(): Promise<any> {
         const provider = new firebase.auth.GoogleAuthProvider();
+        provider.addScope('profile');
+        provider.addScope('email');
         return this.angularFireAuth.auth.signInWithPopup(provider);
     }
 }

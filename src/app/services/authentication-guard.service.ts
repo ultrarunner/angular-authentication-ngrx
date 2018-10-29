@@ -13,11 +13,11 @@ export class AuthenticationGuardService {
     ) { }
 
     canActivate(): boolean {
-        const isLoggedIn = this.authenticationService.isLoggedIn();
-        if (!isLoggedIn) {
-            this.router.navigateByUrl('/login');
-            return false;
-        }
+        // const isLoggedIn = this.authenticationService.isLoggedIn();
+        // if (!isLoggedIn) {
+        //     this.router.navigateByUrl('/login');
+        //     return false;
+        // }
         return true;
     }
 }
