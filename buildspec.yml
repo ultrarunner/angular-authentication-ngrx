@@ -35,7 +35,7 @@ phases:
       # using the s3 service to push the build artifacts into the bucket
       # --acl 'public-read' > makes the files accessible from the web
       # --delete > deletes the original contents of the bucket
-      - aws s3 sync ./dist/my-app s3://just-for-today-devops-production --acl 'public-read' --delete --include "*.html" --include "*.js" --include "*.css" --include "*.ico"
+      - aws s3 sync ./dist/my-app s3://just-for-today-devops-production --acl 'public-read' --delete --exclude "*.txt" --include "*.html" --include "*.js" --include "*.css" --include "*.ico"
     finally:
       - echo Executed POST Build Phase
 
