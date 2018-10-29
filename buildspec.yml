@@ -4,18 +4,29 @@ phases:
   install:
     commands:
       - echo Executing Install Phase
+      # used t0 resynchronize the package index from the sources. 
+      - apt-get update
+      # headless chrome and dependencies
+      - apt-get install -y fonts-liberation libasound2 libnspr4 libnss3 libx11-xcb1 xdg-utils libxss1
+      # pulling down chrome to install
+      - wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+      - dpkg -i google-chrome*.deb
     finally:
       - echo Executed Install Phase
   pre_build:
     commands:
       - echo Executing PRE Build Phase
+      # installing npm packages
       - npm install
     finally:
       - echo Executed PRE Build Phase
   build:
     commands:
       - echo Executing Build Phase
+      # building the solution
       - npm run build:ci
+      # running unit tests
+      - npm run test:ci
     finally:
       - echo Executed Build Phase
   post_build:
