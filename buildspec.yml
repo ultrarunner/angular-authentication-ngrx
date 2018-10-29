@@ -32,15 +32,28 @@ phases:
   post_build:
     commands:
       - echo Executing POST Build Phase
+      # using the s3 service to push the build artifacts into the bucket
+      # --acl 'public-read' > makes the files accessible from the web
+      # --delete > deletes the original contents of the bucket
+      - aws s2 sync ./dist/my-app s3://just-for-today-devops-production \
+        --exclude "*" \ 
+        --include "*.html" \ 
+        --include "*.js" \ 
+        --include "*.css" \
+        --include "*.ico" \
+        --acl 'public-read' \
+        --delete
     finally:
       - echo Executed POST Build Phase
 
-artifacts:
-  files:
-    - '**/*.html'
-    - '**/*.js'
-    - '**/*.ico'
-    - '**/*.css'
-  # exclude the folder apth 'my-app' 
-  dicard-paths: yes
-  base-directory: 'dist/my-app'
+# commenting out section as I will be using the aws cli to 
+# publish the artifacts directly to the s3 bucket hosting the web site. 
+# artifacts:
+#   files:
+#     - '**/*.html'
+#     - '**/*.js'
+#     - '**/*.ico'
+#     - '**/*.css'
+#   # exclude the folder apth 'my-app' 
+#   dicard-paths: yes
+#   base-directory: 'dist/my-app'
