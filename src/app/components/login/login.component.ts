@@ -26,6 +26,10 @@ export class LoginComponent implements OnInit {
     this.store.dispatch(new userActions.GoogleLogin());
   }
 
+  githubLogin(): void {
+    this.store.dispatch(new userActions.GithubLogin());
+  }
+
   logout(): void {
     this.store.dispatch(new userActions.Logout());
   }

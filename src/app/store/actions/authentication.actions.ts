@@ -4,6 +4,7 @@ export const GET_USER = '[Auth] Get User';
 export const AUTHENTICATED = '[Auth] Authenticated';
 export const NOT_AUTHENTICATED = '[Auth] Not Authenticated';
 export const GOOGLE_LOGIN = '[Auth] Google Login Attempt';
+export const GITHUB_LOGIN = '[Auth] Github Login Attempt';
 export const LOGOUT = '[Auth] Logout';
 export const AUTH_ERROR = '[Auth] Error';
 
@@ -31,6 +32,12 @@ export class GoogleLogin implements Action {
     }
 }
 
+export class GithubLogin implements Action {
+    readonly type = GITHUB_LOGIN;
+    constructor(public payload?: any) {
+    }
+}
+
 export class Logout implements Action {
     readonly type = LOGOUT;
     constructor(public payload?: any) {
@@ -48,6 +55,7 @@ export type All =
     | Authenticated
     | NotAuthenticated
     | GoogleLogin
+    | GithubLogin
     | Logout
     | AuthError;
 

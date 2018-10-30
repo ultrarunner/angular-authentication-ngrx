@@ -1,7 +1,11 @@
 <div *ngIf="$user | async as user">
-  <button class="btn btn-sm btn-outline-primary" *ngIf="!user.uid" (click)="googleLogin()" [class.is-loading]="user.loading">
+  <button class="btn btn-sm btn-outline-primary btn-space" *ngIf="!user.uid" (click)="googleLogin()" [class.is-loading]="user.loading">
     Google
   </button>
+  <button class="btn btn-sm btn-outline-secondary btn-space" *ngIf="!user.uid" (click)="githubLogin()" [class.is-loading]="user.loading">
+    Github
+  </button>
+  <button type="button" class="btn btn-sm btn-outline-danger btn-space" *ngIf="user.error" placement="bottom" ngbTooltip="{{user.error}}">!</button>
   <div *ngIf="user.uid" ngbDropdown class="d-inline-block">
     <button class="btn btn-outline-primary" id="dropdownBasic2" ngbDropdownToggle>Hi, {{user.displayName}}</button>
     <div ngbDropdownMenu aria-labelledby="dropdownBasic2">

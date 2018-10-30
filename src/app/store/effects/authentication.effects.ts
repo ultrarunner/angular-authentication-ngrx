@@ -36,11 +36,25 @@ export class AuthenticationEffects {
         );
 
     @Effect()
-    login: Observable<Action> = this.actions.ofType(userActions.GOOGLE_LOGIN)
+    google: Observable<Action> = this.actions.ofType(userActions.GOOGLE_LOGIN)
         .pipe(
             map((action: userActions.GetUser) => action.payload),
             switchMap(payload => {
                 return from(this.googleLogin());
+            }),
+            delay(2000), // just to simulate and display loading spinner
+            map(credentials => {
+                return new userActions.GetUser();
+            }),
+            catchError(error => of(new userActions.AuthError({ error: error.message })))
+        );
+
+    @Effect()
+    github: Observable<Action> = this.actions.ofType(userActions.GITHUB_LOGIN)
+        .pipe(
+            map((action: userActions.GetUser) => action.payload),
+            switchMap(payload => {
+                return from(this.githubLogin());
             }),
             delay(2000), // just to simulate and display loading spinner
             map(credentials => {
@@ -65,6 +79,13 @@ export class AuthenticationEffects {
     private googleLogin(): Promise<any> {
         const provider = new firebase.auth.GoogleAuthProvider();
         provider.addScope('profile');
+        provider.addScope('email');
+        return this.angularFireAuth.auth.signInWithPopup(provider);
+    }
+
+    private githubLogin(): Promise<any> {
+        const provider = new firebase.auth.GithubAuthProvider();
+        // provider.addScope('profile');
         provider.addScope('email');
         return this.angularFireAuth.auth.signInWithPopup(provider);
     }

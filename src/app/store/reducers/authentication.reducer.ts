@@ -30,10 +30,11 @@ export function userReducer(state: User = defaultUser, action: Action) {
             };
         }
 
-        case userActions.GOOGLE_LOGIN: {
+        case userActions.GOOGLE_LOGIN || userActions.GITHUB_LOGIN: {
             return {
                 ...state,
-                loading: true
+                loading: true,
+                error: ''
             };
         }
 
