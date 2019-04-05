@@ -1,16 +1,17 @@
 <div *ngIf="$user | async as user">
-  <button class="btn btn-sm btn-outline-primary btn-space" *ngIf="!user.uid" (click)="googleLogin()" [class.is-loading]="user.loading">
-    Google
-  </button>
-  <button class="btn btn-sm btn-outline-secondary btn-space" *ngIf="!user.uid" (click)="githubLogin()" [class.is-loading]="user.loading">
-    Github
-  </button>
-  <button type="button" class="btn btn-sm btn-outline-danger btn-space" *ngIf="user.error" placement="bottom" ngbTooltip="{{user.error}}">!</button>
-  <div *ngIf="user.uid" ngbDropdown class="d-inline-block">
-    <button class="btn btn-outline-primary" id="dropdownBasic2" ngbDropdownToggle>Hi, {{user.displayName}}</button>
-    <div ngbDropdownMenu aria-labelledby="dropdownBasic2">
-      <button class="dropdown-item">{{user.email}}</button>
-      <button class="dropdown-item" (click)="logout()">Logout</button>
-    </div>
+  <i class="fa fa-google-plus-square fa-2x" *ngIf="!user.uid" (click)="googleLogin()" [class.is-loading]="user.loading"
+    placement="bottom" ngbTooltip="Google Login" style="cursor: pointer;">
+  </i>
+  <i class="fa fa-github-square fa-2x" *ngIf="!user.uid" (click)="githubLogin()" [class.is-loading]="user.loading"
+    placement="bottom" ngbTooltip="Github Login" style="margin-left: 3px; cursor: pointer;">
+  </i>
+  <i class="fa fa-exclamation-circle fa-2x" style="color: #b72025; margin-left: 3px;" *ngIf="user.error" placement="left" ngbTooltip="{{user.error}}" tooltipClass="custom-tooltip"></i>
+
+  <ng-template #logoutContent>
+    Hi, {{user.displayName}}. Click me to Logout!
+  </ng-template>
+  <div *ngIf="user.uid">
+    <i class="fa fa-user" (click)="logout()" style="color: #b72025; cursor: pointer; margin-left: 3px;" placement="left"
+      [ngbTooltip]="logoutContent" tooltipClass="custom-tooltip"></i>
   </div>
 </div>

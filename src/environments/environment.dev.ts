@@ -8,5 +8,5 @@ export const environment = {
     storageBucket: 'just-for-today-c43e3.appspot.com',
     messagingSenderId: '819188652514'
   },
-  apiUrl: 'http://localhost:3000/v2'
+  apiUrl: 'https://o8ode1k5le.execute-api.us-east-1.amazonaws.com/dev/feeds'
 };

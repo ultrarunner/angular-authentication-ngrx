@@ -1,0 +1,20 @@
+<div class="card text-light bg-dark mb-3" style="width: 21.5rem; max-width: 21.5rem; float: left; margin-left: 5px;">
+  <div class="card-header" *ngIf="!articles.section">{{feed.title}}</div>
+  <div class="card-header" *ngIf="articles.section">{{feed.title}} | {{feed.options.section}}</div>
+  <div class="card-body">
+    <h5 class="card-title" *ngIf="!articles.results">Loading data from ... {{feed.url}}</h5>
+    <p class="card-text" *ngFor="let item of articles.results">
+      <!-- had to use the [innerHtml] of div to render html -->
+      <ng-template #tipContent>
+        <div [innerHtml]="item.abstract"></div>
+      </ng-template>
+      <i class="fa fa-info-circle" data-toggle="tooltip" placement="bottom" tooltipClass="custom-tooltip"
+        [ngbTooltip]="tipContent" aria-hidden="true"></i>
+      <i class="fa fa-fire" style="color: #b72025; margin-left: 5px;"
+        *ngIf="(item.pubDate | date:'shortDate') == (today | date:'shortDate' )" ngbTooltip="Served fresh!"></i>
+      <a href="{{item.url}}" target="_blank"><i class="fa fa-external-link" aria-hidden="true"
+          ngbTooltip="Open in new Window" style="color: white; margin-left: 5px;"></i></a>
+      {{item.title}}
+    </p>
+  </div>
+</div>

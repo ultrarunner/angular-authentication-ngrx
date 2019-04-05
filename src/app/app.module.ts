@@ -17,6 +17,10 @@ import { environment } from 'src/environments/environment';
 import { userReducer } from './store/reducers/authentication.reducer';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { FeedService } from './services/feed.service';
+import { HttpClientModule } from '@angular/common/http';
+import { NgMasonryGridModule } from 'ng-masonry-grid';
+import { DashboardModule } from './dashboard/dashboard.module';
 
 @NgModule({
   declarations: [
@@ -27,8 +31,10 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
   imports: [
     BrowserModule,
     FormsModule,
+    HttpClientModule,
     Routing,
     NgbModule,
+    DashboardModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
     EffectsModule.forRoot([
@@ -38,11 +44,13 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
       user: userReducer
     }),
     // used for chrome redux dev tools
-    StoreDevtoolsModule.instrument({ maxAge: 10 })
+    StoreDevtoolsModule.instrument({ maxAge: 10 }),
+    NgMasonryGridModule
   ],
   providers: [
     AuthenticationService,
-    AuthenticationGuardService
+    AuthenticationGuardService,
+    FeedService
   ],
   bootstrap: [
     AppComponent,

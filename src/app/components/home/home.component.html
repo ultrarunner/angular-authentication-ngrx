@@ -1,3 +1,11 @@
-<main role="main" class="inner cover">
-    <h1 style="text-align: center;">Home</h1>
+<main role="main">
+    <!-- <h1 style="text-align: center;">Home</h1> -->
+    <ng-masonry-grid>
+        <ng-masonry-grid-item *ngFor="let feed of $feeds | async; let i = index;" id="{{'masonry-grid-item-' + i}}">
+            <app-dashboard-rss-tile [feed]="feed" *ngIf="feed.type === 'rss'"></app-dashboard-rss-tile>
+            <app-dashboard-nyt-tile [feed]="feed" *ngIf="feed.type === 'nyt'"></app-dashboard-nyt-tile>
+            <app-dashbord-nasa-apod-tile [feed]="feed" *ngIf="feed.type === 'nasa'"></app-dashbord-nasa-apod-tile>
+        </ng-masonry-grid-item>
+    </ng-masonry-grid>
 </main>
+<div class="clearfix"></div>

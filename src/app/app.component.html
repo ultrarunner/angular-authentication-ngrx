@@ -1,35 +1,38 @@
 <!-- header -->
 <header class="blog-header py-3">
     <div class="row flex-nowrap justify-content-between align-items-center">
-        <div class="col-4 pt-1">
+        <div class="col-2 pt-1">
             <!-- logo -->
             <div class="text-muted" href="#">
                 <img src="../../assets/borntolearnwild.png" style="margin-right: 10px; width:30px; height: 30px;" title="Learn Wild | Not every site can become a great source of knowledge but a great source of knowledge can come from any site. Just keep learning.">
             </div>
         </div>
-        <div class="col-4 text-center">
-            <div class="blog-header-logo text-dark">{{title}}</div>
+        <div class="col-8 text-center">
+            <div class="blog-header-logo text-dark">
+                {{title}} <span style="color: #b72025; font-weight: bolder;"> | </span>Never Step Learning...Ever.
+            </div>
         </div>
-        <div class="col-4 d-flex justify-content-end align-items-center">
+        <div class="col-2 d-flex justify-content-end align-items-center">
             <app-login></app-login>
         </div>
     </div>
 </header>
 
 <!-- toolbar -->
-<div class="nav-scroller py-1 mb-2">
+<!-- <div class="nav-scroller py-1 mb-2">
     <nav class="nav d-flex justify-content-between">
-        <a class="p-2 text-muted" href="#">Never Step Learning...</a>
-        <a class="p-2 text-muted" href="#">Ever.</a>
+        <div class="p-2 text-muted"></div>
+        <div class="p-2 text-muted">Ever.</div>
     </nav>
-</div>
+</div> -->
 <!-- end toolbar -->
+
 <router-outlet></router-outlet>
 
 <!-- begin footer -->
 <footer class="mastfoot mt-auto">
     <div class="inner text-center">
-        <p>Created by <a href="https://borntolearnwild.com/">BornToLearnWild</a>.</p>
+        <p>Created by <a href="https://borntolearnwild.com/" class="text-dark">BornToLearnWild</a></p>
     </div>
 </footer>
 <!-- end footer -->

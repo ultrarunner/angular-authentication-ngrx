@@ -1,0 +1,32 @@
+<div class="card text-white bg-dark mb-3" style="min-width: 21.5rem; max-width: 21.5rem; float: left; margin-left: 5px;">
+  <div class="card-header" *ngIf="!rss.title">{{feed.title}}</div>
+  <div class="card-header" *ngIf="rss.title">{{rss.title}}
+    <ng-template #rssContent>
+      <div [innerHtml]="rss.description"></div>
+    </ng-template>
+    <a *ngIf="rss.feedUrl" href="{{rss.feedUrl}}" target="_blank"><i class="fa fa-rss" aria-hidden="true" ngbTooltip="Open RSS feed in New Window."
+        style="float: right; color: white; margin-left: 5px; margin-top: 5px;"></i></a>
+    <a *ngIf="rss.link" href="{{rss.link}}" target="_blank"><i class="fa fa-external-link" aria-hidden="true" ngbTooltip="Open Site in New Window."
+        style="float: right; color: white; margin-left: 5px; margin-top: 5px;"></i></a>
+    <span *ngIf="rss.description" style="float: right; color: #b72025;"><i class="fa fa-info-circle" placement="bottom"
+        [ngbTooltip]="rssContent" aria-hidden="true" tooltipClass="custom-tooltip"></i></span>
+  </div>
+  <div class="card-body">
+    <h5 class="card-title" *ngIf="!rss.items">Loading data from ... {{feed.url}}</h5>
+    <p class="card-text" *ngFor="let item of rss.items">
+      <!-- RESEARCH: had to use the [innerHtml] of div to render html. seems like dynamic tooltips do not get parsed. -->
+      <ng-template #tipContent>
+        <div [innerHtml]="item.content"></div>
+      </ng-template>
+      <i class="fa fa-info-circle" placement="bottom" tooltipClass="custom-tooltip" [ngbTooltip]="tipContent"
+        aria-hidden="true"></i>
+      <i class="fa fa-fire" style="color: #b72025; margin-left: 5px;" *ngIf="(item.pubDate | date:'shortDate') == (today | date:'shortDate' )"
+        ngbTooltip="Served fresh!"></i>
+      <a *ngIf="(item.enclosure && item.enclosure.url)" href="{{item.enclosure.url}}" target="_blank"><i class="fa fa-play-circle"
+          aria-hidden="true" ngbTooltip="Play Episode" style="color: white; margin-left: 5px;"></i></a>
+      <a *ngIf="item.link" href="{{item.link}}" target="_blank"><i class="fa fa-external-link" aria-hidden="true"
+          ngbTooltip="Open in new Window" style="color: white; margin-left: 5px;"></i></a>
+      {{item.title}}
+    </p>
+  </div>
+</div>
